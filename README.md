@@ -32,7 +32,7 @@ Coming soon, apologies, run main.lua and see some example shapes!
 | **width** | [number] width |
 | **height**| [number] height |
 | **color**| [string] hex color , IE "#FF00FF"|
-| **parent**| [object] link to a parent of lovr-mouse type, when parent moves, this moves|
+| **parent**| [object] link to a parent of lovr2d type, when parent moves, this moves|
 | **halign**| [string] horizontal align , "left" "center" "right"|
 | **valign**| [string] vertical align , "top" "center" "bottom"|
 | **opacity**| [number] opacity, 0-1|
