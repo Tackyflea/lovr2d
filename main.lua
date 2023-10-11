@@ -26,6 +26,14 @@ function lovr.load()
     local text = UI:text({
         text= "myCoolText", 
         x = 300,
+        y = 100, 
+        height = 80,
+        width = 80,
+        color = "#ff0000"
+    })
+    local textChanging = UI:text({
+        text= function() return "testing "..math.floor(lovr.timer.getTime()*10)/10 end, 
+        x = 550,
         y = 100,
         height = 80,
         width = 80,
