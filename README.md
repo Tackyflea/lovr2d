@@ -1,6 +1,7 @@
 
 # lovr2d
-a 2d gui tool for use with LOVR
+a 2d gui tool for use with [LOVR](https://lovr.org)
+
 made by [Lucky Dee](https://www.linkedin.com/in/lucky-dee-7745b240/) when i have time, fixes/ changes/ minmax PRs welcome! 
 
 # Requirements:
