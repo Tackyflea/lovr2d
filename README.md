@@ -41,6 +41,17 @@ The short version is , just do this
 | ui:image({props}) |   creates an image with a texture property (which you should ideally preload)|
 | ui:text({props}) |  make text, has special properties: text, halign_text, valign_text |
 
+### Other functions
+
+    :delete(object)
+
+... will delete the object! And it's kids!
+
+    :getChildren(parent(object), andParent(boolean))
+
+Will get you the children, and optionally with the parent as well if you want to modify all of them at once
+
+
 ### General properties for all items/ text
 |Property| description |
 |--|--|
