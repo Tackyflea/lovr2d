@@ -1,9 +1,6 @@
-lovr.mouse = require("lovr-mouse")
-
-require('lovr2d') --all imports
-
-local UI 
-local dragBox 
+lovr.mouse = require("lovr-mouse") 
+require('lovr2d')  
+local UI  
 function lovr.load() 
  
     UI = lovr2d:new()

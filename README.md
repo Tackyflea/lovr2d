@@ -2,7 +2,9 @@
 # lovr2d
 a 2d gui tool for use with [LOVR](https://lovr.org)
 
-made by [Lucky Dee](https://www.linkedin.com/in/lucky-dee-7745b240/) when i have time, fixes/ changes/ minmax PRs welcome! 
+  
+
+made by [Lucky Dee](https://www.linkedin.com/in/lucky-dee-7745b240/) when i have time, fixes/ changes/ minmax PRs welcome!
 
 # Requirements:
 Lovr-mouse
@@ -14,6 +16,21 @@ Lovr-mouse
 ![Example Dragging](https://github.com/Tackyflea/lovr2d/blob/25db94484ee05d4e9b6ebc5e38a6987bb4331ed9/images/lovr_E41TS5VcJB.gif)
 # How to use
 Coming soon, apologies, run main.lua and see some example shapes!
+The short version is , just do this 
+
+    lovr.mouse  =  require("lovr-mouse")
+    require('lovr2d')
+    local  UI
+    function  lovr.load()
+	    UI  =  lovr2d:new()
+	    
+	    --example shape
+	    local  box1  =  UI:box({x = 100, y = 100, height  =  80, width = 80, color = "#ffffff"})
+    end 
+    
+    function  lovr.draw(pass)
+	    UI.draw(pass)
+    end
 
 ### List of all object types 
 |name| description  |
