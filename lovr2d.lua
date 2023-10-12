@@ -58,17 +58,7 @@ function lovr2d:new()
         local over   = mx > tempX and mx < tempX + data.width and my > tempY and my < tempY + data.height
         return over
     end
-    self.MouseDoesntOverlapUI = function()
-        local notOverlapping = true
-        for _, UIItem in ipairs(InfoTable.UI.overlappingItems) do
-            if lovr2d.hitTest(UIItem) then
-                notOverlapping = false
-                break
-            end
-        end
-        return notOverlapping
-    end
-
+    
     self.font = lovr.graphics.getDefaultFont()
     --self.westernFont = lovr.graphics.newFont("assets/fonts/Wellfleet-Regular.ttf", 18)
     --  self.FontInterBlack = lovr.graphics.newFont("assets/fonts/Inter/Inter-Black.ttf", 14)
@@ -323,10 +313,7 @@ function lovr2d:sendToFront(obj)
     self.drawQueue = cleanedQueue
 end
 
-function lovr2d:updateHitTests(object)
-    -- if object.onLeftClick then
-    --     print("hi")
-    -- end
+function lovr2d:updateHitTests(object) 
     if object.onLeftClick or object.drag or object.onRightClick then
         if self.hitTest(object) then
             --Highlight for visuals assign
