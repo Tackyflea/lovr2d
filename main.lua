@@ -76,12 +76,12 @@ function lovr.load()
             limits = { left = 0, top = 0, right = lovr.system.getWindowWidth(), bottom = lovr.system.getWindowHeight() }
         },
         drag = true,
+        rotation=function() return lovr.timer.getTime()*8 end,
         width=150,height=150,
         x=500,y=300,
         color = "#f9f9f9"
     })
-    local dragBox1Text = UI:text({
-        x=-300,y=-300,
+    local dragBox1Text = UI:text({ 
         text="Drag me!", parent =dragBox,
         
     })
