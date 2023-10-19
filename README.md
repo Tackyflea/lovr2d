@@ -31,6 +31,16 @@ The short version is , just do this
     function  lovr.draw(pass)
 	    UI.draw(pass)
     end
+### WIP , should work  
+
+ui:circle())
+circle specs 
+radius - number  - how large it is 
+rotation - 0-360 (deg )(OR FUNCTION!) (applies to all objects)
+angleStart = 0-360 (deg )
+angleEnd = 0-360 (deg )
+segments - control how many subdivisions a circle has 
+
 
 ### List of all object types 
 |name| description  |
@@ -64,6 +74,7 @@ Will get you the children, and optionally with the parent as well if you want to
 | **parent**| [object] link to a parent of lovr2d type, when parent moves, this moves|
 | **halign**| [string] horizontal align , "left" "center" "right"|
 | **valign**| [string] vertical align , "top" "center" "bottom"|
+| **scale**| [number] scales object, supports function passing |
 | **opacity**| [number] opacity, 0-1|
 | **drag**| [bool]dragging  on and off, **warning**: experimental. Ideally use on shapes, not text|
 | **dragProps**| [object] explained below { sendToFront: boolean, limits: {left=x,top=x, right=x, bottom=x} 

@@ -1,5 +1,5 @@
 --[[
-    WIP STATE! Can change at will! 
+    WIP STATE! Can change at will!
     By Lucky Dee
     https://www.linkedin.com/in/lucky-dee-7745b240/
 ]]
@@ -58,13 +58,13 @@ function lovr2d:new()
         local over   = mx > tempX and mx < tempX + data.width and my > tempY and my < tempY + data.height
         return over
     end
-    
+
     self.font = lovr.graphics.getDefaultFont()
     --self.westernFont = lovr.graphics.newFont("assets/fonts/Wellfleet-Regular.ttf", 18)
     --  self.FontInterBlack = lovr.graphics.newFont("assets/fonts/Inter/Inter-Black.ttf", 14)
     --self.font:setPixelDensity(1) -- set units to pixels instead of meters
     self.defaultFont = self.font
-    self.defaultFont:setPixelDensity(1) --Sets scaling to pixel size
+    self.defaultFont:setPixelDensity(1.5) --Sets scaling to pixel size
 
     self.drawQueue = {}
     self.cachedDrawQueueL = #self.drawQueue
@@ -81,7 +81,6 @@ function lovr2d:new()
     end
 
     self.zSort = function()
-        -- CleanNils()
         --if something's changed in the draw queue lenght , ie we added something new
         --re sort the array based off z index
         self.cachedDrawQueueL = #self.drawQueue
@@ -98,12 +97,20 @@ function lovr2d:new()
                 return a.zIndex < b.zIndex
             end
         end)
-        -- -- Remove the 'index' property from each element
-        -- for _, element in ipairs(self.drawQueue) do
-        --     element.index = nil
-        -- end
+    end
+    self.__predraw = function()
+        --before loop , do any deletion
+        for _, data in pairs(self.drawQueue) do
+            if data.deleteFun then
+                local delete = data.deleteFun()
+                if delete then
+                    self:delete(data)
+                end
+            end
+        end
     end
     self.draw = function(pass)
+        self.__predraw()
         self:setPass(pass)
         self.mouseX, self.mouseY = lovr.mouse.getPosition()
         self.leftClick = lovr.mouse.isDown(1)
@@ -120,14 +127,15 @@ function lovr2d:new()
             self.zSort()
         end
         for _, data in pairs(self.drawQueue) do
-            --scales object from data.scaleX , scaleY (only from top left atm )
-            local scaleX = type(data.scaleX) == "function" and data.scaleX() or data.scaleX
-            local scaleY = type(data.scaleY) == "function" and data.scaleY() or data.scaleY
+            local pos3D = lovr.math.vec3(data.x, data.y, data.z)
+            pass:transform(pos3D)
 
+            local rotation = type(data.rotation) == "function" and data.rotation() or data.rotation
+            local scale = type(data.scale) == "function" and data.scale() or data.scale
+            pass:rotate(math.rad(rotation), 0, 0, 1)
             if data.type == "image" then
                 self.pass:push()
                 self.pass:setMaterial(data.texture)
-                self.pass:transform(data.x, data.y, data.z)
                 --self.pass:transform(data.width / 2, data.height / 2, 0)
                 self.pass:rotate(math.pi, 0, 0, 1)
                 local color = self.hex2rgb(data.color)
@@ -137,7 +145,6 @@ function lovr2d:new()
                 --Top Space
                 self.pass:pop()
             elseif data.type == "rect" then
-                local pos3D = lovr.math.vec3(data.x, data.y, data.z)
                 if data.id == "testbutton" then
                 end
                 local colorToShow = data.color
@@ -147,9 +154,17 @@ function lovr2d:new()
                 self.pass:setColor(color[1], color[2], color[3], data.opacity)
 
 
-                self.pass:plane(pos3D, data.width, data.height)
+                self.pass:plane(vec3(0), data.width, data.height)
+            elseif data.type == "circle" then
+                local colorToShow = data.color
+
+                if type(data.color) == "function" then colorToShow = data.color() end
+                local color = self.hex2rgb(colorToShow)
+                self.pass:setColor(color[1], color[2], color[3], data.opacity)
+
+                pass:circle(vec3(0), data.radius, 0, 0, 0, 0, "fill", data.angleStart * (math.pi / 180),
+                    data.angleEnd * (math.pi / 180), data.segments)
             elseif data.type == "roundedRect" then
-                local pos3D = lovr.math.vec3(data.x, data.y, data.z)
                 if data.id == "testbutton" then
                 end
                 local colorToShow = data.color
@@ -166,8 +181,8 @@ function lovr2d:new()
                 local color = self.hex2rgb(data.color)
                 self.pass:setColor(color[1], color[2], color[3], data.opacity)
                 self.pass:text(textToShow,
-                    data.x, data.y, data.z,
-                    data.scale, data.angle,
+                    vec3(0),
+                    scale, data.angle,
                     data.ax,
                     data.ay,
                     data.az,
@@ -176,7 +191,8 @@ function lovr2d:new()
                     data.valign_text
                 )
             end
-
+            pass:rotate(math.rad(-rotation), 0, 0, 1)
+            pass:transform(-pos3D)
 
 
             --we use the invert of the array to check from nearest to mouse to end
@@ -202,25 +218,34 @@ function lovr2d:new()
 
             --clamp the dragging to roots limits
             local limit = dragObj.dragProps.limits
-            if limit == nil then  --failsafe
-                limit ={ left = 0, top = 0, right = lovr.system.getWindowWidth(), bottom = lovr.system.getWindowHeight() }
-
+            if limit == nil then --failsafe
+                limit = { left = 0, top = 0, right = lovr.system.getWindowWidth(), bottom = lovr.system.getWindowHeight() }
             end
-            dragObj.x =  self.clamp(dragObj.x, limit.left + dragObj.width / 2, limit.right - dragObj.width / 2)
-            dragObj.y =  self.clamp(dragObj.y, limit.top + dragObj.height / 2, limit.bottom - dragObj.height / 2)
+            dragObj.x = self.clamp(dragObj.x, limit.left + dragObj.width / 2, limit.right - dragObj.width / 2)
+
+            dragObj.y = self.clamp(dragObj.y, limit.top + dragObj.height / 2, limit.bottom - dragObj.height / 2)
             self:updateChildren(dragObj)
         end
 
         --Highlight for Buttons Visual
         if self.firstSelectedButton then
             self.pass:setColor(1, 1, 1, 0.2)
+            local data = self.firstSelectedButton
+
+            local pos3D = lovr.math.vec3(data.x, data.y, data.z)
+            local rotation = type(data.rotation) == "function" and data.rotation() or data.rotation
+            pass:transform(pos3D)
+            pass:rotate(math.rad(rotation), 0, 0, 1)
+
             if self.firstSelectedButton.roundness then
-                local data = self.firstSelectedButton
                 self:roundGeometry(self.pass, data)
             else
-                self.pass:plane(self.firstSelectedButton.x, self.firstSelectedButton.y, self.firstSelectedButton.z,
+                self.pass:plane(vec3(0),
                     self.firstSelectedButton.width, self.firstSelectedButton.height)
             end
+
+            pass:rotate(math.rad(-rotation), 0, 0, 1)
+            pass:transform(-pos3D)
         end
     end
 
@@ -256,6 +281,17 @@ function lovr2d:_util_align(data)
         parent_or_stage_width = data.parent.width
         parent_or_stage_height = data.parent.height
         --   data.y= data.y + data.parent.y
+        local rotationParent = data.parent.rotation
+        local selfRotation = data.rotation
+
+        --edge case in case bboth parent and children are functions
+        local combinedRotation = function()
+            local parentR = type(rotationParent) == "function" and rotationParent() or rotationParent
+            local selfR = type(selfRotation) == "function" and selfRotation() or selfRotation
+            return selfR + parentR
+        end
+        data.rotation= combinedRotation
+
     end
     --halignment
     if data.halign == "left" then
@@ -313,7 +349,7 @@ function lovr2d:sendToFront(obj)
     self.drawQueue = cleanedQueue
 end
 
-function lovr2d:updateHitTests(object) 
+function lovr2d:updateHitTests(object)
     if object.onLeftClick or object.drag or object.onRightClick then
         if self.hitTest(object) then
             --Highlight for visuals assign
@@ -437,8 +473,10 @@ function lovr2d:updateChildren(parent)
     for index, element in ipairs(self.drawQueue) do
         if element.parent then
             if element.parent == parent then
-                element.x = element.cache.x + parent.x - parent.width / 2
-                element.y = element.cache.y + parent.y - parent.height / 2
+                local difX = parent.cache.x - parent.x
+                local difY = parent.cache.y - parent.y
+                element.x = element.cache.x - difX
+                element.y = element.cache.y + -difY
             end
         end
     end
@@ -461,6 +499,11 @@ function lovr2d:_backupVariables(data)
         width = 200,
         height = 200,
         zIndex = 1,
+        radius = 20,
+        angleStart = 0,
+        angleEnd = 360,
+        segments = 64,
+        rotation = 0,
         color = "#FFFFFF",
         halign = "left",
         valign = "top",
@@ -495,6 +538,24 @@ function lovr2d:box(data)
 
     lovr2d:_util_align(data)
     data.type = "rect"
+    data.z = data.z
+
+
+
+    table.insert(self.drawQueue, data)
+
+    --in case you need them!
+    return data
+end
+
+function lovr2d:circle(data)
+    --backup variables
+    local data = lovr2d:_backupVariables(data)
+
+    --assignment
+
+    lovr2d:_util_align(data)
+    data.type = "circle"
     data.z = data.z
 
 
@@ -584,7 +645,7 @@ function lovr2d:roundGeometry(pass, data)
     local scaleYOffset = -data.height * (1 - scaleY) / 2
     --main
 
-    pass:translate(data.x + scaleXOffset, data.y + scaleYOffset, data.z)
+    pass:translate(scaleXOffset, scaleYOffset, 0)
     self.pass:scale(scaleX, scaleY, 1)
     pass:plane(vec3(0), mainSize, data.height)
     --righht
@@ -603,5 +664,5 @@ function lovr2d:roundGeometry(pass, data)
     pass:circle(-mainSize / 2, data.height / 2 - edgeSize, 0, edgeSize, 0, 0, 0, 0, "fill"
     , math.pi / 2, math.pi, 4)
     self.pass:scale(1 / scaleX, 1 / scaleY, 1)
-    pass:translate(-data.x - scaleXOffset, -data.y - scaleYOffset, -data.z)
+    pass:translate(-scaleXOffset, -scaleYOffset, 0)
 end
