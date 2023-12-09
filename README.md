@@ -30,17 +30,19 @@ The short version is , just do this
     
     function  lovr.draw(pass)
 	    UI.draw(pass)
-    end
-### WIP , should work  
+    end 
 
-ui:circle())
-circle specs 
-radius - number  - how large it is 
-rotation - 0-360 (deg )(OR FUNCTION!) (applies to all objects)
-angleStart = 0-360 (deg )
-angleEnd = 0-360 (deg )
-segments - control how many subdivisions a circle has 
+# Dynamic sizing 
+Lovr2D supports dynamic resizing of X,Y, Width, Height.
+To do so, set the property:  flex = true to the object.
+This means the object will live reload with resizing. From now on you can use this on the object X, Y, width, height 
 
+|property type| description  | example |
+|--|--|
+| number |hard number to set value too| x = 300|
+| %  | percent relative to stage width / height| width = 30%|
+| vw  | Viewport Width, can be used on width or height| width="30vw"|
+| vh  | Viewport Height, can be used on width or height| y="30vh"|
 
 ### List of all object types 
 |name| description  |
@@ -76,6 +78,10 @@ Will get you the children, and optionally with the parent as well if you want to
 | **valign**| [string] vertical align , "top" "center" "bottom"|
 | **scale**| [number] scales object, supports function passing |
 | **opacity**| [number] opacity, 0-1|
+
+### Temp Disabled, WIP 
+|Property| description |
+|--|--|
 | **drag**| [bool]dragging  on and off, **warning**: experimental. Ideally use on shapes, not text|
 | **dragProps**| [object] explained below { sendToFront: boolean, limits: {left=x,top=x, right=x, bottom=x} 
 

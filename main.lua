@@ -3,7 +3,7 @@ require('lovr2d')
 local UI  
 function lovr.load() 
  
-    UI = lovr2d:new()
+    UI = Lovr2d:new()
  
     local box1 = UI:box({
         x = 100,
@@ -60,29 +60,20 @@ function lovr.load()
         color = "#ffffff"
     })
 
-    dragBox = UI:box({
-        dragProps = {
-            sendToFront = true,
-            limits = { left = 0, top = 0, right = lovr.system.getWindowWidth(), bottom = lovr.system.getWindowHeight() }
-        },
-        drag = true,
-        width=150,height=150,
-        x=300,y=300,
-        color = "#ff0000"
+    parentBox = UI:box({ 
+        width="30vw",height=150,
+        x="30vw",y=300,
+        color = "#ff0000", 
+        flex = true,
     })
-    dragBox2 = UI:box({
-        dragProps = {
-            sendToFront = true,
-            limits = { left = 0, top = 0, right = lovr.system.getWindowWidth(), bottom = lovr.system.getWindowHeight() }
-        },
-        drag = true,
+    rotatedBox = UI:box({ 
         rotation=function() return lovr.timer.getTime()*8 end,
         width=150,height=150,
         x=500,y=300,
         color = "#f9f9f9"
     })
     local dragBox1Text = UI:text({ 
-        text="Drag me!", parent =dragBox,
+        text="Percent Box ", parent =parentBox,
         
     })
 
