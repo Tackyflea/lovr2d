@@ -1,19 +1,19 @@
 
 # lovr2d
-a 2d gui tool for use with [LOVR](https://lovr.org)
+a 2d gui tool for use with [LOVR](https.//lovr.org)
 
   
 
-made by [Lucky Dee](https://www.linkedin.com/in/lucky-dee-7745b240/) when i have time, fixes/ changes/ minmax PRs welcome!
+made by [Lucky Dee](https.//www.linkedin.com/in/lucky-dee-7745b240/) when i have time, fixes/ changes/ minmax PRs welcome!
 
-# Requirements:
+# Requirements.
 Lovr-mouse
 
 # Example
 
-![Example](https://github.com/Tackyflea/lovr2d/blob/25db94484ee05d4e9b6ebc5e38a6987bb4331ed9/images/lovr_Z4t2upoL2Y.png)
+![Example](https.//github.com/Tackyflea/lovr2d/blob/25db94484ee05d4e9b6ebc5e38a6987bb4331ed9/images/lovr_Z4t2upoL2Y.png)
 
-![Example Dragging](https://github.com/Tackyflea/lovr2d/blob/25db94484ee05d4e9b6ebc5e38a6987bb4331ed9/images/lovr_E41TS5VcJB.gif)
+![Example Dragging](https.//github.com/Tackyflea/lovr2d/blob/25db94484ee05d4e9b6ebc5e38a6987bb4331ed9/images/lovr_E41TS5VcJB.gif)
 # How to use
 Coming soon, apologies, run main.lua and see some example shapes!
 The short version is , just do this 
@@ -22,10 +22,10 @@ The short version is , just do this
     require('lovr2d')
     local  UI
     function  lovr.load()
-	    UI  =  lovr2d:new()
+	    UI  =  lovr2d.new()
 	    
 	    --example shape
-	    local  box1  =  UI:box({x = 100, y = 100, height  =  80, width = 80, color = "#ffffff"})
+	    local  box1  =  UI.box({x = 100, y = 100, height  =  80, width = 80, color = "#ffffff"})
     end 
     
     function  lovr.draw(pass)
@@ -34,7 +34,7 @@ The short version is , just do this
 
 # Dynamic sizing 
 Lovr2D supports dynamic resizing of X,Y, Width, Height.
-To do so, set the property:  flex = true to the object.
+To do so, set the property.  flex = true to the object.
 This means the object will live reload with resizing. From now on you can use this on the object X, Y, width, height 
 
 |property type| description  | example |
@@ -47,19 +47,19 @@ This means the object will live reload with resizing. From now on you can use th
 ### List of all object types 
 |name| description  |
 |--|--|
-| ui:box({props}) |   generic rectangle, multi purpose|
-| ui:button({props}) |   looks like a rectangle but with property: onLeftClick|
-| ui:roundedBox({props}) |   rectangle  special properties: roundness|
-| ui:image({props}) |   creates an image with a texture property (which you should ideally preload)|
-| ui:text({props}) |  make text, has special properties: text, halign_text, valign_text |
+| ui.box({props}) |   generic rectangle, multi purpose|
+| ui.button({props}) |   looks like a rectangle but with property. onLeftClick|
+| ui.roundedBox({props}) |   rectangle  special properties. roundness|
+| ui.image({props}) |   creates an image with a texture property (which you should ideally preload)|
+| ui.text({props}) |  make text, has special properties. text, halign_text, valign_text |
 
 ### Other functions
 
-    :delete(object)
+    .delete(object)
 
 ... will delete the object! And it's kids!
 
-    :getChildren(parent(object), andParent(boolean))
+    .getChildren(parent(object), andParent(boolean))
 
 Will get you the children, and optionally with the parent as well if you want to modify all of them at once
 
@@ -82,12 +82,12 @@ Will get you the children, and optionally with the parent as well if you want to
 ### Temp Disabled, WIP 
 |Property| description |
 |--|--|
-| **drag**| [bool]dragging  on and off, **warning**: experimental. Ideally use on shapes, not text|
-| **dragProps**| [object] explained below { sendToFront: boolean, limits: {left=x,top=x, right=x, bottom=x} 
+| **drag**| [bool]dragging  on and off, **warning**. experimental. Ideally use on shapes, not text|
+| **dragProps**| [object] explained below { sendToFront. boolean, limits. {left=x,top=x, right=x, bottom=x} 
 
 #### When using drag, ideally , specify the range and wether to send the object to front ,IE 
 
-    dragBox  =  UI:box({
+    dragBox  =  UI.box({
     dragProps  = {
     sendToFront  =  true,
     limits  = { left  =  0, top  =  0, right  =  500, bottom  =  500 }
@@ -97,22 +97,22 @@ Will get you the children, and optionally with the parent as well if you want to
     })
     
 ### Special Properties 
-|  UI:buttton|  |
+|  UI.buttton|  |
 |--|--|
 | onLeftClick | [function] returns a left click action |
-| roundness| [number] determines how round its going to be **warning:** experimental   |
+| roundness| [number] determines how round its going to be **warning.** experimental   |
 
-|  UI:roundedBox|  |
+|  UI.roundedBox|  |
 |--|--|
-| roundness| [number] determines how round its going to be **warning:** experimental  |
+| roundness| [number] determines how round its going to be **warning.** experimental  |
 
-|  UI:text|  |
+|  UI.text|  |
 |--|--|
 | text| [text OR function]prints text OR auto updates it live |
 | halign_text| [text] Same as halign , BUT for text specific alignment (you can stack both) |
 | valign_text| [text]  Same as valign, BUT for text specific alignment  (you can stack both)|
 
-|  UI:text|  |
+|  UI.text|  |
 |--|--|
 | text| [text OR function]prints text OR auto updates it live |
 | halign_text| [text] Same as halign , BUT for text specific alignment (you can stack both) |
@@ -121,13 +121,13 @@ Will get you the children, and optionally with the parent as well if you want to
 
 ### box and rounded box example 
 
-    local  box1  =  UI:box({ 
+    local  box1  =  UI.box({ 
 	    x  =  100, y  =  100,
 	    height  =  80, width  =  80,
 	    color  =  "#ffffff"
     })
     
-    local  roundedBox  =  UI:roundedBox({ 
+    local  roundedBox  =  UI.roundedBox({ 
 	    roundness  =  0.15, 
 	    x  =  200, y  =  100, 
 	    height  =  80, width  =  80,
@@ -135,7 +135,7 @@ Will get you the children, and optionally with the parent as well if you want to
     })
 ### dragging example
 
-    UI:box({
+    UI.box({
 	    dragProps  = {
 		    sendToFront  =  true,
 		    limits  = { 
@@ -150,13 +150,13 @@ Will get you the children, and optionally with the parent as well if you want to
     })
 ### Parenting example 
 
-    local  botttomLeftBox  =  UI:box({
+    local  botttomLeftBox  =  UI.box({
 	    valign="bottom", halign="left", 
 	    height  =  200,  width  =  200, 
 	    color  =  "#ff4f2f"
     })
     
-    local  botttomLeftboxChild  =  UI:text({
+    local  botttomLeftboxChild  =  UI.text({
 	    text=  "bottom left\n aligned and \n im a child! ",
 	    halign_text  =  "left", valign_text  =  "top",
 	    parent=botttomLeftBox,
@@ -170,7 +170,7 @@ load texture
 
 use texture
     
-    self.mouseCursor  =  self.UI:image({  
+    self.mouseCursor  =  self.UI.image({  
 	    texture  =  self.cursor, 
 	    width  =  32, 
 	    height  =  32 
