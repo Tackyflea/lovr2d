@@ -72,7 +72,7 @@ Will get you the children, and optionally with the parent as well if you want to
 | **z** |[number]  z index, **not** z position, optional, be mindful on stacking when using it  |
 | **width** | [number] width |
 | **height**| [number] height |
-| **color**| [string] hex color , IE "#FF00FF"|
+| **color**| [string] hex color , IE "#FF00FF"|, also acceptable: {0,0,0} or even just 0-1 (for black and white)
 | **parent**| [object] link to a parent of lovr2d type, when parent moves, this moves|
 | **halign**| [string] horizontal align , "left" "center" "right"|
 | **valign**| [string] vertical align , "top" "center" "bottom"|

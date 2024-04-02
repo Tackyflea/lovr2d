@@ -244,7 +244,7 @@ function Lovr2d.new(instance)
         local pickedFont = instance.fonts[font]
         if font ~= instance.fonts[font] then
             if not instance.fonts[font] then
-                l_print("Font not loaded! Use setFont first!  " .. font)
+                l_print("Font not loaded! Use setFont first!  " )
             else
                 font = instance.fonts[font]
                 instance.pass:setFont(font)
@@ -300,7 +300,6 @@ function Lovr2d.new(instance)
 
 
     instance.drawBody = function(pass)
-        prof.push("l2d_predraw")
         instance.CheckAndUpdateWindowSize()
 
         instance.setPass(pass)
@@ -319,10 +318,7 @@ function Lovr2d.new(instance)
         if instance.cachedDrawQueueL ~= #instance.drawQueue then
             instance.zSort()
         end
-
-        prof.pop("l2d_predraw")
-        prof.push("l2d_drawOjects")
-
+ 
 
         local dataX, dataY, rotation, scale, color, opacity, text, dataWidth, dataHeight
         local processObject = true
@@ -351,8 +347,8 @@ function Lovr2d.new(instance)
 
                 color = instance.hex2rgb(l_type(data.color) == "function" and data.color() or data.color)
                 opacity = l_type(data.opacity) == "function" and data.opacity() or data.opacity
-
                 text = l_type(data.text) == "function" and data.text() or data.text
+ 
                 if not text then
                     text = ""
                     l_print("Text missing ")
@@ -505,9 +501,7 @@ function Lovr2d.new(instance)
             --reset counter
             processObject = true
         end
-
-        prof.pop("l2d_drawOjects")
-        prof.push("l2d_postdraw")
+ 
         -- The stencil state will reset at the end of this lovr.draw, but let's clear it anyway.
         instance.pass:setStencilWrite()
         instance.pass:setStencilTest()
@@ -533,8 +527,7 @@ function Lovr2d.new(instance)
 
             dragObj.y = instance.clamp(dragObj.y, limit.top + dragObj.height / 2, limit.bottom - dragObj.height / 2)
             instance.updateChildren(dragObj)
-        end
-        prof.pop("l2d_postdraw")
+        end 
     end
 
     instance.updateChildren = function(parent)
@@ -940,7 +933,7 @@ function Lovr2d.new(instance)
     end
     --Types
 
-    instance.text = function(data)
+    instance.text = function(data)   
         if data.valign_text == "center" then data.valign_text = "middle" end
         data.width = data.width or 0
         data.height = data.height or 0
